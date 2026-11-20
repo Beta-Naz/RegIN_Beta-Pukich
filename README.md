@@ -81,51 +81,6 @@ main
 4. По завершении этапа — **Pull Request** в `main`, второй участник делает review.
 5. Конфликты возможны только в `MainWindow.xaml.cs` и `App.xaml` — их **трогает только EldarPukich**, поэтому конфликтов там быть не должно.
 
----
-
-## Контракты (заглушки в `main`)
-
-Чтобы страницы EldarPukich'a могли вызывать методы Beta-Naz'a, **до расхождения по веткам** в `main` коммитятся заглушки. Beta-Naz потом наполняет их реальной логикой.
-
-```csharp
-// Classes/WorkingDB.cs — заглушка, Beta-Naz наполняет
-public class WorkingDB
-{
-    public static bool CheckUser(string login) => false;
-    public static User GetUser(string login) => null;
-    public static void UpdatePassword(string login, string newPass) { }
-    public static void AddUser(User user) { }
-}
-
-// Classes/SendMail.cs — заглушка
-public class SendMail
-{
-    public static void Send(string to, string subject, string body) { }
-}
-
-// Classes/User.cs — полная модель, нужна обоим
-public class User
-{
-    public string Login { get; set; }
-    public string Password { get; set; }
-    public byte[] Image { get; set; }
-}
-
-// Pages/Confirmation.xaml.cs — тип подтверждения
-public enum TypeConfirmation { Login, Regin }
-```
-
-Навигация между страницами (реализует EldarPukich в `MainWindow.xaml.cs`):
-
-```csharp
-MainWindow.mainWindow.OpenPage(new Login());
-MainWindow.mainWindow.OpenPage(new Recovery());
-MainWindow.mainWindow.OpenPage(new Regin());
-MainWindow.mainWindow.OpenPage(new Confirmation(TypeConfirmation.Login, user));
-```
-
----
-
 ## Дополнительные задания (на «хорошо» / «отлично»)
 
 | Задание | Кто выполняет | Где |
