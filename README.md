@@ -4,10 +4,10 @@
 **Учебное задание:** приобрести навыки работы с SMTP-протоколом, изучить конструкции обработки исключений, отработать командную работу через систему контроля версий.
 
 **Команда:**
-- 🟦 **Beta-Naz** — инфраструктура (БД, почта, модели) + страницы Login и Recovery
-- 🟩 **EldarPukich** — UI-каркас (MainWindow, капча, Material Design) + страницы Regin и Confirmation
+- **Beta-Naz** — инфраструктура (БД, почта, модели) + страницы Login и Recovery
+- **EldarPukich** — UI-каркас (MainWindow, капча, Material Design) + страницы Regin и Confirmation
 
-### 🟦 Beta-Naz — `feature/beta-infra-login-recovery`
+### Beta-Naz — `feature/beta-infra-login-recovery`
 
 **Зона ответственности:** работа с базой данных, отправка почты, авторизация и восстановление пароля.
 
@@ -20,7 +20,7 @@
 | `Pages/Recovery.xaml` + `.xaml.cs` | 36–47 | Восстановление пароля: проверка логина, капча, отправка нового пароля на почту |
 | SQL-скрипт `db/regin.sql` | 73 | Создание БД `regin` и таблицы `users` |
 
-### 🟩 EldarPukich — `feature/eldar-ui-regin-confirmation`
+### EldarPukich — `feature/eldar-ui-regin-confirmation`
 
 **Зона ответственности:** каркас приложения, капча, регистрация и подтверждение по почте.
 
