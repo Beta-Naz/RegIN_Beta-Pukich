@@ -49,5 +49,47 @@ namespace RegIN.Classes
         /// <returns></returns>
         public static bool IsOpenConnection(MySqlConnection connection) => 
             connection != null && connection.State == ConnectionState.Open;
+
+        public static void SavePin(string login, string pin)
+        {
+            using (var connection = OpenConnection())
+            {
+                if (connection == null)
+                    throw new Exception("Нет подключения к БД.");
+
+                using (var command = new MySqlCommand(
+                    "UPDATE users SET PinCode = @pin WHERE Login = @login",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("@login", login);
+                    command.Parameters.AddWithValue("@pin", PinHelper.Hash(pin));
+
+                    if (command.ExecuteNonQuery() != 1)
+                        throw new Exception("Не удалось сохранить PIN-код.");
+                }
+            }
+        }
+
+        public static string? GetPin(string login)
+        {
+            using (var connection = OpenConnection())
+            {
+                if (connection == null)
+                    throw new Exception("Нет подключения к БД.");
+
+                using (var command = new MySqlCommand(
+                    "SELECT PinCode FROM users WHERE Login = @login",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("@login", login);
+
+                    object result = command.ExecuteScalar();
+
+                    return result == null || result == DBNull.Value
+                        ? null
+                        : result.ToString();
+                }
+            }
+        }
     }
 }
