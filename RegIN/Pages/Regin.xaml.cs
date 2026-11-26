@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Imaging = Aspose.Imaging;
+using RegIN.Classes;
 
 namespace RegIN.Pages
 {
@@ -33,8 +34,7 @@ namespace RegIN.Pages
         }
         public void SetNotification(string Message, SolidColorBrush _Color)
         {
-            LNameUser.Content = Message;
-            LNameUser.Foreground = _Color;
+            NotificationHelper.Show(LNameUser, Message, _Color);
         }
 
         private void CorrectLogin()

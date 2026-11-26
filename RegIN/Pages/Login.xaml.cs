@@ -203,8 +203,7 @@ namespace RegIN.Pages
 
         public void SetNotification(string Message, SolidColorBrush _Color)
         {
-            LNameUser.Content = Message;
-            LNameUser.Foreground = _Color;
+            NotificationHelper.Show(LNameUser, Message, _Color);
         }
         private void RecoveryPassword(object sender, MouseButtonEventArgs e)
         {
