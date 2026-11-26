@@ -195,5 +195,40 @@ namespace RegIN.Classes
                 }
             }
         }
+
+        public static void InitializeDatabase()
+        {
+            var builder = new MySqlConnectionStringBuilder(_connectionString);
+            builder.Database = "";
+
+            using (var connection = new MySqlConnection(builder.ConnectionString))
+            {
+                connection.Open();
+
+                string sql = @"
+            CREATE DATABASE IF NOT EXISTS regin
+            CHARACTER SET utf8mb4;
+
+            USE regin;
+
+            CREATE TABLE IF NOT EXISTS users (
+                Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                Login VARCHAR(50) NOT NULL,
+                Password VARCHAR(50) NOT NULL,
+                Name VARCHAR(50) NOT NULL,
+                Image BLOB DEFAULT NULL,
+                DateUpdate DATETIME NOT NULL,
+                DateCreate DATETIME NOT NULL,
+                PinCode VARCHAR(128) DEFAULT NULL,
+                PinAttempts INT NOT NULL DEFAULT 0,
+                PinBlockedUntil DATETIME DEFAULT NULL
+            );";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

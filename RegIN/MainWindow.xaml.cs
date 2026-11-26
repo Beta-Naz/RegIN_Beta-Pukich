@@ -17,6 +17,19 @@ namespace RegIN
         {
             InitializeComponent();
 
+            try
+            {
+                Classes.WorkingDB.InitializeDatabase();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Ошибка подключения к базе данных:\n" + ex.Message);
+
+                Application.Current.Shutdown();
+                return;
+            }
+
             mainWindow = this;
             OpenPage(new Pages.Login());
         }
