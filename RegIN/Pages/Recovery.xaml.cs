@@ -38,14 +38,13 @@ namespace RegIN.Pages
                     bitImg.BeginInit();
                     bitImg.StreamSource = ms;
                     bitImg.EndInit();
-                    ImageSource imageSource = bitImg;
                     DoubleAnimation StartAnimation = new DoubleAnimation();
                     StartAnimation.From = 1;
                     StartAnimation.To = 0;
                     StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
                     StartAnimation.Completed += delegate
                     {
-                        IUser.Source = imageSource;
+                        IUser.Source = bitImg;
                         DoubleAnimation EndAnimation = new DoubleAnimation();
                         EndAnimation.From = 0;
                         EndAnimation.To = 1;

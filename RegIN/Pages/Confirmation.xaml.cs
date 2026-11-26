@@ -32,9 +32,7 @@ namespace RegIN.Pages
 
             Classes.SendMail.SendMessage($"Login code: {Code}", MainWindow.mainWindow.UserLogin.Login);
 
-            Thread TSendMailCode = new Thread(TimerSendMailCode);
-
-            TSendMailCode.Start();
+            new Thread(TimerSendMailCode).Start();
         }
 
         public void TimerSendMailCode()
