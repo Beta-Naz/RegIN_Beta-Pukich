@@ -5,14 +5,14 @@ using System.Windows.Threading;
 
 namespace RegIN.Pages
 {
-    public enum TypeConfirmation
-    {
-        Login,
-        Regin
-    }
-
     public partial class Confirmation : Page
     {
+        public enum TypeConfirmation
+        {
+            Login,
+            Regin
+        }
+
         TypeConfirmation ThisTypeConfirmation;
 
         public int Code = 0;

@@ -9,17 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\ic_mail.png" />
+    <None Remove="Images\Monkey30.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Classes\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Imaging" Version="26.11.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.4.0" />
     <Folder Include="Elements\" />
-    <Folder Include="Images\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="26.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ic_mail.png" />
+    <Resource Include="Images\Monkey30.png" />
   </ItemGroup>
 
 </Project>
