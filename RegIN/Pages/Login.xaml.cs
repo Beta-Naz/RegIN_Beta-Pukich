@@ -194,5 +194,11 @@ namespace RegIN.Pages
         {
             MainWindow.mainWindow.OpenPage(new Regin());
         }
+
+        private void OpenPinLogin(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.OpenPage(
+                new PinLogin(TbLogin.Text));
+        }
     }
 }
