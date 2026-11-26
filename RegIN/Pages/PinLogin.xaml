@@ -1,0 +1,66 @@
+﻿<Page x:Class="RegIN.Pages.PinLogin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Background="#EFEFEF"
+      FontFamily="Segoe UI"
+      Title="PinLogin">
+
+    <Grid>
+
+        <materialDesign:Card Width="300"
+                             Padding="15"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center">
+
+            <StackPanel>
+
+                <materialDesign:PackIcon
+                    Kind="Lock"
+                    Width="80"
+                    Height="80"
+                    Foreground="#673AB7"
+                    HorizontalAlignment="Center"
+                    Margin="0,15,0,20"/>
+
+                <TextBlock Text="Login by PIN"
+                           FontSize="24"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Enter login:"/>
+
+                <TextBox x:Name="TbLogin"
+                         MaxLength="50"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Enter PIN code:"/>
+
+                <PasswordBox x:Name="TbPin"
+                             MaxLength="4"
+                             FontSize="24"
+                             KeyDown="PinKeyDown"
+                             Margin="0,5,0,15"/>
+
+                <TextBlock x:Name="TNotification"
+                           Foreground="Red"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,0,0,10"/>
+
+                <Button x:Name="BLogin"
+                        Content="Sign in"
+                        Click="LoginByPin"
+                        Margin="0,5"/>
+
+                <Button Content="Back"
+                        Click="OpenLogin"
+                        Margin="0,5"/>
+
+            </StackPanel>
+
+        </materialDesign:Card>
+
+    </Grid>
+
+</Page>

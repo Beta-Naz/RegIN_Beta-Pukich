@@ -32,9 +32,7 @@ namespace RegIN.Pages
 
             Classes.SendMail.SendMessage($"Login code: {Code}", MainWindow.mainWindow.UserLogin.Login);
 
-            Thread TSendMailCode = new Thread(TimerSendMailCode);
-
-            TSendMailCode.Start();
+            new Thread(TimerSendMailCode).Start();
         }
 
         public void TimerSendMailCode()
@@ -80,6 +78,27 @@ namespace RegIN.Pages
                 if (ThisTypeConfirmation == TypeConfirmation.Login)
                 {
                     MessageBox.Show("Авторизация пользователя успешно подтверждена.");
+
+                    try
+                    {
+                        if (string.IsNullOrEmpty(
+                            Classes.WorkingDB.GetPin(
+                                MainWindow.mainWindow.UserLogin.Login)))
+                        {
+                            if (MessageBox.Show(
+                                "Хотите создать PIN-код для быстрого входа?",
+                                "Создание PIN-кода",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question) == MessageBoxResult.Yes)
+                            {
+                                MainWindow.mainWindow.OpenPage(new CreatePin());
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
                 else
                 {

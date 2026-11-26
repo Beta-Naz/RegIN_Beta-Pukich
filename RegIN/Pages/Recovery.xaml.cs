@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using RegIN.Classes;
 
 namespace RegIN.Pages
 {
@@ -37,14 +38,13 @@ namespace RegIN.Pages
                     bitImg.BeginInit();
                     bitImg.StreamSource = ms;
                     bitImg.EndInit();
-                    ImageSource imageSource = bitImg;
                     DoubleAnimation StartAnimation = new DoubleAnimation();
                     StartAnimation.From = 1;
                     StartAnimation.To = 0;
                     StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
                     StartAnimation.Completed += delegate
                     {
-                        IUser.Source = imageSource;
+                        IUser.Source = bitImg;
                         DoubleAnimation EndAnimation = new DoubleAnimation();
                         EndAnimation.From = 0;
                         EndAnimation.To = 1;
@@ -120,7 +120,7 @@ namespace RegIN.Pages
                     StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
                     StartAnimation.Completed += delegate
                     {
-                        IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ic-email.png"));
+                        IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Monkey30.png"));
                         DoubleAnimation EndAnimation = new DoubleAnimation();
                         EndAnimation.From = 0;
                         EndAnimation.To = 1;
@@ -136,8 +136,7 @@ namespace RegIN.Pages
 
         public void SetNotification(string Message, SolidColorBrush _Color)
         {
-            LNameUser.Content = Message;
-            LNameUser.Foreground = _Color;
+            NotificationHelper.Show(LNameUser, Message, _Color);
         }
 
         private void OpenLogin(object sender, MouseButtonEventArgs e)

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Win32;
+using RegIN.Classes;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -33,8 +33,7 @@ namespace RegIN.Pages
         }
         public void SetNotification(string Message, SolidColorBrush _Color)
         {
-            LNameUser.Content = Message;
-            LNameUser.Foreground = _Color;
+            NotificationHelper.Show(LNameUser, Message, _Color);
         }
 
         private void CorrectLogin()
@@ -57,10 +56,9 @@ namespace RegIN.Pages
 
         public void SetLogin()
         {
-            Regex regex = new Regex(@"([a-zA-Z0-9._-]{4,}@[a-zA-Z0-9._-]{2,}\.[a-zA-Z0-9-]{2,})");
-            BCorrectLogin = regex.IsMatch(TbLogin.Text);
+            BCorrectLogin = Regex.IsMatch(TbLogin.Text, @"([a-zA-Z0-9._-]{4,}@[a-zA-Z0-9._-]{2,}\.[a-zA-Z0-9-]{2,})");
 
-            if (regex.IsMatch(TbLogin.Text) == true)
+            if (BCorrectLogin)
             {
                 SetNotification("", Brushes.Black);
                 MainWindow.mainWindow.UserLogin.GetUserLogin(TbLogin.Text);
@@ -83,10 +81,9 @@ namespace RegIN.Pages
 
         public void SetPassword()
         {
-            Regex regex = new Regex(@"(?=.*[0-9])(?=.*[!@#$%^&*\-_=])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*\-_=]{10,}");
-            BCorrectPassword = regex.IsMatch(TbPassword.Password);
+            BCorrectPassword = Regex.IsMatch(TbPassword.Password, @"(?=.*[0-9])(?=.*[!@#$%^&*\-_=])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*\-_=]{10,}");
 
-            if (regex.IsMatch(TbPassword.Password) == true)
+            if (BCorrectPassword)
             {
                 SetNotification("", Brushes.Black);
 
@@ -114,7 +111,7 @@ namespace RegIN.Pages
         {
             BCorrectConfirmPassword = TbConfirmPassword.Password == TbPassword.Password;
 
-            if (TbConfirmPassword.Password != TbPassword.Password)
+            if (!BCorrectConfirmPassword)
                 SetNotification("Passwords do not match", Brushes.Red);
             else
             {
@@ -190,17 +187,14 @@ namespace RegIN.Pages
                     }
 
                     int X = 0;
-                    int Width = 256;
                     int Y = 0;
-                    int Height = 256;
 
                     if (rasterImage.Width > rasterImage.Height)
                         X = (int)((rasterImage.Width - 256f) / 2);
                     else
                         Y = (int)((rasterImage.Height - 256f) / 2);
 
-                    Imaging.Rectangle rectangle = new Imaging.Rectangle(X, Y, Width, Height);
-                    rasterImage.Crop(rectangle);
+                    rasterImage.Crop(new Imaging.Rectangle(X, Y, 256, 256));
 
                     rasterImage.Save("IUser.jpg");
                 }

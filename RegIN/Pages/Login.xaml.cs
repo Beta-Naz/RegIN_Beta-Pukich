@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RegIN.Classes;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using RegIN.Classes;
-using static RegIN.Classes.User;
 
 namespace RegIN.Pages
 {
@@ -56,7 +45,7 @@ namespace RegIN.Pages
                     StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
                     StartAnimation.Completed += delegate
                     {
-                        IUser.Source = imageSource;
+                        IUser.Source = bitImg;
                         DoubleAnimation EndAnimation = new DoubleAnimation();
                         EndAnimation.From = 0;
                         EndAnimation.To = 1;
@@ -130,8 +119,7 @@ namespace RegIN.Pages
                         }
                         else
                         {
-                            Thread TBlockAutorization = new Thread(BlockAutorization);
-                            TBlockAutorization.Start();
+                            new Thread(BlockAutorization).Start();
 
                             SendMail.SendMessage("An attempt was made to log into your account.", MainWindow.mainWindow.UserLogin.Login);
                         }
@@ -155,17 +143,9 @@ namespace RegIN.Pages
             for (int i = 0; i < 180; i++)
             {
                 TimeSpan TimeIdle = StartBlock.Subtract(DateTime.Now);
-                string s_minutes = TimeIdle.Minutes.ToString();
-                if (TimeIdle.Minutes < 10)
-                    s_minutes = "0" + TimeIdle.Minutes;
-
-                string s_seconds = TimeIdle.Seconds.ToString();
-                if (TimeIdle.Seconds < 10)
-                    s_seconds = "0" + TimeIdle.Seconds;
-
                 Dispatcher.Invoke(() =>
                 {
-                    SetNotification($"Reauthorization available in: {s_minutes}:{s_seconds}", Brushes.Red);
+                    SetNotification($"Reauthorization available in: {TimeIdle:mm\\:ss}", Brushes.Red);
                 });
 
                 Thread.Sleep(1000);
@@ -203,8 +183,7 @@ namespace RegIN.Pages
 
         public void SetNotification(string Message, SolidColorBrush _Color)
         {
-            LNameUser.Content = Message;
-            LNameUser.Foreground = _Color;
+            NotificationHelper.Show(LNameUser, Message, _Color);
         }
         private void RecoveryPassword(object sender, MouseButtonEventArgs e)
         {
@@ -214,6 +193,12 @@ namespace RegIN.Pages
         private void OpenRegin(object sender, MouseButtonEventArgs e)
         {
             MainWindow.mainWindow.OpenPage(new Regin());
+        }
+
+        private void OpenPinLogin(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.OpenPage(
+                new PinLogin(TbLogin.Text));
         }
     }
 }

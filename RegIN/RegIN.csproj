@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Classes\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Aspose.Imaging" Version="26.11.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.4.0" />
     <Folder Include="Elements\" />

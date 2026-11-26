@@ -86,7 +86,19 @@ namespace RegIN.Classes
                 MySqlConnection mySqlConnection = WorkingDB.OpenConnection();
                 if (WorkingDB.IsOpenConnection(mySqlConnection))
                 {
-                    WorkingDB.Query($"UPDATE `users` SET `Password`='{this.Password}' WHERE `Login` = '{this.Login}'", mySqlConnection);
+                    using (var command = new MySqlCommand(
+                        @"UPDATE users
+                            SET Password = @password,
+                                PinCode = NULL,
+                                PinAttempts = 0,
+                                PinBlockedUntil = NULL
+                            WHERE Login = @login",
+                        mySqlConnection))
+                    {
+                        command.Parameters.AddWithValue("@password", this.Password);
+                        command.Parameters.AddWithValue("@login", this.Login);
+                        command.ExecuteNonQuery();
+                    }
                 }
 
                 WorkingDB.CloseConnection(mySqlConnection);
