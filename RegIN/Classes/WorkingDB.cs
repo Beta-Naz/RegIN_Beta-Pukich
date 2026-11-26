@@ -91,5 +91,109 @@ namespace RegIN.Classes
                 }
             }
         }
+
+        public static bool CheckPin(
+            string login, string pin, out string message)
+        {
+            message = "";
+
+            if (!PinHelper.IsValid(pin))
+            {
+                message = "PIN must contain 4 digits";
+                return false;
+            }
+
+            using (var connection = OpenConnection())
+            {
+                if (connection == null)
+                    throw new Exception("Database connection failed");
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    int id;
+                    int attempts;
+                    string savedHash;
+                    DateTime? blockedUntil;
+
+                    using (var command = new MySqlCommand(
+                        @"SELECT Id, PinCode, PinAttempts, PinBlockedUntil
+                  FROM users
+                  WHERE Login = @login
+                  FOR UPDATE",
+                        connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@login", login);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (!reader.Read() || reader.IsDBNull(1))
+                            {
+                                message = "Login or PIN is incorrect";
+                                return false;
+                            }
+
+                            id = reader.GetInt32(0);
+                            savedHash = reader.GetString(1);
+                            attempts = reader.GetInt32(2);
+
+                            blockedUntil = reader.IsDBNull(3)
+                                ? null
+                                : reader.GetDateTime(3);
+                        }
+                    }
+
+                    if (blockedUntil.HasValue &&
+                        blockedUntil.Value > DateTime.Now)
+                    {
+                        message = "PIN login is temporarily blocked";
+                        return false;
+                    }
+
+                    bool correct = PinHelper.Verify(pin, savedHash);
+
+                    if (correct)
+                    {
+                        attempts = 0;
+                        blockedUntil = null;
+                    }
+                    else
+                    {
+                        attempts++;
+
+                        if (attempts >= 3)
+                        {
+                            attempts = 0;
+                            blockedUntil = DateTime.Now.AddMinutes(3);
+                            message = "Too many attempts. Wait 3 minutes";
+                        }
+                        else
+                        {
+                            blockedUntil = null;
+                            message = $"Incorrect PIN. {3 - attempts} attempts left";
+                        }
+                    }
+
+                    using (var command = new MySqlCommand(
+                        @"UPDATE users
+                  SET PinAttempts = @attempts,
+                      PinBlockedUntil = @blocked
+                  WHERE Id = @id",
+                        connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@attempts", attempts);
+                        command.Parameters.AddWithValue(
+                            "@blocked",
+                            (object?)blockedUntil ?? DBNull.Value);
+
+                        command.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+
+                    return correct;
+                }
+            }
+        }
     }
 }
