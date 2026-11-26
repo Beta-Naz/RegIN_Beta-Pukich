@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Classes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="5.4.0" />
     <Folder Include="Elements\" />
     <Folder Include="Images\" />
   </ItemGroup>
