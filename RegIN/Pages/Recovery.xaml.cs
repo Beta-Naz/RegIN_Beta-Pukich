@@ -120,7 +120,7 @@ namespace RegIN.Pages
                     StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
                     StartAnimation.Completed += delegate
                     {
-                        IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ic-email.png"));
+                        IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Monkey30.png"));
                         DoubleAnimation EndAnimation = new DoubleAnimation();
                         EndAnimation.From = 0;
                         EndAnimation.To = 1;
