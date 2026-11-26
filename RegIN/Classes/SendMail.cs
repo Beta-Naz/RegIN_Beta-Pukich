@@ -13,7 +13,7 @@ namespace RegIN.Classes
                 Credentials = new NetworkCredential("nazirsabitov@yandex.ru", "uwyfsadtoetdjxdk"),
                 EnableSsl = true
             };
-            smtpClient.Send("h4tache@yandex.ru", To, "Проект RegIn", Message);
+            smtpClient.Send("nazirsabitov@yandex.ru", To, "Проект RegIn", Message);
         }
     }
 }
