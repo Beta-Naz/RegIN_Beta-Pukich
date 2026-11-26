@@ -78,6 +78,27 @@ namespace RegIN.Pages
                 if (ThisTypeConfirmation == TypeConfirmation.Login)
                 {
                     MessageBox.Show("Авторизация пользователя успешно подтверждена.");
+
+                    try
+                    {
+                        if (string.IsNullOrEmpty(
+                            Classes.WorkingDB.GetPin(
+                                MainWindow.mainWindow.UserLogin.Login)))
+                        {
+                            if (MessageBox.Show(
+                                "Хотите создать PIN-код для быстрого входа?",
+                                "Создание PIN-кода",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question) == MessageBoxResult.Yes)
+                            {
+                                MainWindow.mainWindow.OpenPage(new CreatePin());
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
                 else
                 {
