@@ -6,7 +6,7 @@ namespace RegIN.Classes
 {
     public class WorkingDB
     {
-        private readonly static string _connectionString = @$"server=localhost;database=regin;user=root;pwd=;";
+        private readonly static string _connectionString = @$"server=localhost;database=regin;user=root;pwd=1234;";
         /// <summary>
         /// Создание и открытие подключения к бд
         /// </summary>

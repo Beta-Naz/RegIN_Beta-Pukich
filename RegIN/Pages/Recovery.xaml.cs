@@ -38,20 +38,7 @@ namespace RegIN.Pages
                     bitImg.BeginInit();
                     bitImg.StreamSource = ms;
                     bitImg.EndInit();
-                    DoubleAnimation StartAnimation = new DoubleAnimation();
-                    StartAnimation.From = 1;
-                    StartAnimation.To = 0;
-                    StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                    StartAnimation.Completed += delegate
-                    {
-                        IUser.Source = bitImg;
-                        DoubleAnimation EndAnimation = new DoubleAnimation();
-                        EndAnimation.From = 0;
-                        EndAnimation.To = 1;
-                        EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                        IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
-                    };
-                    IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
+                    AnimateUserImage(bitImg);
                 }
                 catch (Exception exp)
                 {
@@ -68,20 +55,7 @@ namespace RegIN.Pages
             if (LNameUser.Content != "")
             {
                 LNameUser.Content = "";
-                DoubleAnimation StartAnimation = new DoubleAnimation();
-                StartAnimation.From = 1;
-                StartAnimation.To = 0;
-                StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                StartAnimation.Completed += delegate
-                {
-                    IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ic-user.png"));
-                    DoubleAnimation EndAnimation = new DoubleAnimation();
-                    EndAnimation.From = 0;
-                    EndAnimation.To = 1;
-                    EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                    IUser.BeginAnimation(OpacityProperty, EndAnimation);
-                };
-                IUser.BeginAnimation(OpacityProperty, StartAnimation);
+                AnimateUserImage(DefaultUserImage());
             }
 
             if (TbLogin.Text.Length > 0)
@@ -89,7 +63,23 @@ namespace RegIN.Pages
                 SetNotification("Login is incorrect", Brushes.Red);
             }
         }
-
+        private void AnimateUserImage(BitmapImage image)
+        {
+            DoubleAnimation StartAnimation = new DoubleAnimation();
+            StartAnimation.From = 1;
+            StartAnimation.To = 0;
+            StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
+            StartAnimation.Completed += delegate
+            {
+                IUser.Source = image;
+                DoubleAnimation EndAnimation = new DoubleAnimation();
+                EndAnimation.From = 0;
+                EndAnimation.To = 1;
+                EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
+                IUser.BeginAnimation(OpacityProperty, EndAnimation);
+            };
+            IUser.BeginAnimation(OpacityProperty, StartAnimation);
+        }
         public void CorrectCapture()
         {
             Capture.IsEnabled = false;
@@ -114,20 +104,7 @@ namespace RegIN.Pages
             {
                 if (MainWindow.mainWindow.UserLogin.Password != String.Empty)
                 {
-                    DoubleAnimation StartAnimation = new DoubleAnimation();
-                    StartAnimation.From = 1;
-                    StartAnimation.To = 0;
-                    StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                    StartAnimation.Completed += delegate
-                    {
-                        IUser.Source = new BitmapImage(new Uri("pack://application:,,,/Images/Monkey30.png"));
-                        DoubleAnimation EndAnimation = new DoubleAnimation();
-                        EndAnimation.From = 0;
-                        EndAnimation.To = 1;
-                        EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                        IUser.BeginAnimation(OpacityProperty, EndAnimation);
-                    };
-                    IUser.BeginAnimation(OpacityProperty, StartAnimation);
+                    AnimateUserImage(DefaultUserImage());
                     SetNotification("An email has been sent to your email.", Brushes.Black);
                     MainWindow.mainWindow.UserLogin.CreateNewPassword();
                 }
@@ -138,7 +115,10 @@ namespace RegIN.Pages
         {
             NotificationHelper.Show(LNameUser, Message, _Color);
         }
-
+        private BitmapImage DefaultUserImage()
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Images/Monkey30.png"));
+        }
         private void OpenLogin(object sender, MouseButtonEventArgs e)
         {
             MainWindow.mainWindow.OpenPage(new Login());

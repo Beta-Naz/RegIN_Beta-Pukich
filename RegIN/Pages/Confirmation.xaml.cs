@@ -78,10 +78,10 @@ namespace RegIN.Pages
                 if (ThisTypeConfirmation == TypeConfirmation.Login)
                 {
                     MessageBox.Show("Авторизация пользователя успешно подтверждена.");
-
+                    BSendMessage.IsEnabled = false;
                     try
                     {
-                        if (string.IsNullOrEmpty(
+                        if (string.IsNullOrWhiteSpace(
                             Classes.WorkingDB.GetPin(
                                 MainWindow.mainWindow.UserLogin.Login)))
                         {
@@ -94,6 +94,11 @@ namespace RegIN.Pages
                                 MainWindow.mainWindow.OpenPage(new CreatePin());
                             }
                         }
+                        else
+                        {
+                            MessageBox.Show($"У вам уже существует пин код: {Classes.WorkingDB.GetPin(
+                                MainWindow.mainWindow.UserLogin.Login)}");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -105,6 +110,7 @@ namespace RegIN.Pages
                     MainWindow.mainWindow.UserLogin.SetUser();
 
                     MessageBox.Show("Регистрация пользователя успешно подтверждена.");
+                    MainWindow.mainWindow.OpenPage(new Login());
                 }
             }
         }
